@@ -10,7 +10,7 @@ TODO: deploy to PyPi
 
 Add your `SCRAPINGBEE_API_KEY` and the `ScrapingBeeMiddleware` to `DOWNLOADER_MIDDLEWARES` in your project `settings.py`. Don't forget to set `CONCURRENT_REQUESTS` according to your [ScrapingBee plan](https://www.scrapingbee.com/#pricing).
 
-```
+```python
 SCRAPINGBEE_API_KEY = 'REPLACE-WITH-YOUR-API-KEY'
 
 DOWNLOADER_MIDDLEWARES = {
@@ -28,7 +28,7 @@ You can inherit your spiders from `ScrapingBeeSpider` and yield a `ScrapingBeeRe
 
 Below you can see an example from the spider in [httpbin.py](examples/httpbin/httpbin/spiders/httpbin.py).
 
-```
+```python
 from scrapy_scrapingbee import ScrapingBeeSpider, ScrapingBeeRequest
 
 JS_SNIPPET = 'window.scrollTo(0, document.body.scrollHeight);'
@@ -77,6 +77,6 @@ Add your API key to [settings.py](examples/httpbin/httpbin/settings.py).
 
 In your terminal, go to `examples/httpbin/httpbin` and run the example spider with:
 
-```
+```bash
 scrapy crawl httpbin
 ```
