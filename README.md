@@ -1,21 +1,14 @@
-## Scrapy ScrapingBee Middleware
+# Scrapy ScrapingBee Middleware
 
 Integrate Scrapy with ScrapingBee API to handle headless browsers and proxy rotation. Requires to create an account on [scrapingbee.com](https://scrapingbee.com) to get an API key.
 
-### Installation
+## Installation
 
-TODO: replace with instructions to install from PyPi
+TODO: deploy to PyPi
 
-Locally, clone the project. Create a virtual environment, install the requirements and install the alpha version in editable mode with:
+## Configuration
 
-```
-pip install -e .
-```
-
-### Configuration
-
-In your Scrapy project settings.py add your `SCRAPINGBEE_API_KEY` and the `ScrapingBeeMiddleware` to `DOWNLOADER_MIDDLEWARES`.
-Don't forget to set CONCURRENT_REQUESTS according to your [ScrapingBee plan](https://www.scrapingbee.com/#pricing).
+Add your `SCRAPINGBEE_API_KEY` and the `ScrapingBeeMiddleware` to `DOWNLOADER_MIDDLEWARES` in your project `settings.py`. Don't forget to set `CONCURRENT_REQUESTS` according to your [ScrapingBee plan](https://www.scrapingbee.com/#pricing).
 
 ```
 SCRAPINGBEE_API_KEY = 'REPLACE-WITH-YOUR-API-KEY'
@@ -27,16 +20,18 @@ DOWNLOADER_MIDDLEWARES = {
 CONCURRENT_REQUESTS = 1
 ```
 
-### Usage
+## Usage
 
 You can inherit your spiders from `ScrapingBeeSpider` and yield a `ScrapingBeeRequest`.
 
 `ScrapingBeeSpider` overrides the default logger to hide your API_KEY in the Scrapy logs.
 
-Below you can see an example from the spider in [httpbin.py](examples/httpbin/spiders/httpbin.py).
+Below you can see an example from the spider in [httpbin.py](examples/httpbin/httpbin/spiders/httpbin.py).
 
 ```
 from scrapy_scrapingbee import ScrapingBeeSpider, ScrapingBeeRequest
+
+JS_SNIPPET = 'window.scrollTo(0, document.body.scrollHeight);'
 
 
 class HttpbinSpider(ScrapingBeeSpider):
@@ -49,28 +44,30 @@ class HttpbinSpider(ScrapingBeeSpider):
     def start_requests(self):
         for url in self.start_urls:
             yield ScrapingBeeRequest(url, params={
-                #'render_js': False,
-                #'block_ads': True,
-                #'block_resources': False,
-                #'js_snippet': 'window.scrollTo(0, document.body.scrollHeight);',
-                #'premium_proxy': True,
-                #'country_code': 'fr',
-                #'return_page_source': True,
-                #'wait': 3000,
-                #'wait_for': '#swagger-ui',
+                # 'render_js': False,
+                # 'block_ads': True,
+                # 'block_resources': False,
+                # 'js_snippet': JS_SNIPPET,
+                # 'premium_proxy': True,
+                # 'country_code': 'fr',
+                # 'return_page_source': True,
+                # 'wait': 3000,
+                # 'wait_for': '#swagger-ui',
             },
             headers={
-                #'Accept-Language': 'En-US',
+                # 'Accept-Language': 'En-US',
             },
             cookies={
-                #'name_1': 'value_1',
+                # 'name_1': 'value_1',
             })
 
     def parse(self, response):
         ...
 ```
 
-You can pass [documented ScrapingBee parameters](https://www.scrapingbee.com/documentation/) in the `params` argument of `ScrapingBeeRequest`. Cookies and headers have reserved arguments like normal Scrapy requests. `ScrapingBeeRequest` takes care of formatting all parameters, headers and cookies so that you can pass normal types.
+You can pass [documented ScrapingBee parameters](https://www.scrapingbee.com/documentation/) in the `params` argument of a `ScrapingBeeRequest`. Cookies and headers have reserved arguments like a normal Scrapy Request.
+
+`ScrapingBeeRequest` takes care of formatting all parameters, headers and cookies so that you can pass normal types.
 
 TODO: handle POST requests
 
@@ -78,7 +75,7 @@ TODO: handle POST requests
 
 Add your API key to [settings.py](examples/httpbin/httpbin/settings.py).
 
-Go to `examples/httpbin/httpbin` and run the example spider with:
+In your terminal, go to `examples/httpbin/httpbin` and run the example spider with:
 
 ```
 scrapy crawl httpbin
