@@ -10,5 +10,5 @@ setup(
     maintainer_email='hello@scrapingbee.com',
     license='MIT',
     packages=['scrapy_scrapingbee'],
-    requires=['scrapy'],
+    install_requires=['scrapy'],
 )
