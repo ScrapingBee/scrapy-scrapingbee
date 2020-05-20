@@ -16,7 +16,7 @@ jobs:
         pip install -r requirements.txt
     - name: Lint with flake8
       run: |
-        flake8 scrapy_scrapingbee tests examples setup.py
+        flake8 scrapy_scrapingbee tests examples
     - name: Run unit tests
       run: |
         pip install .
