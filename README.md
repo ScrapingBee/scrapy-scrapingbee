@@ -1,14 +1,18 @@
-# Scrapy ScrapingBee Middleware
+## Scrapy ScrapingBee Middleware
 
-Integrate Scrapy with ScrapingBee API to handle headless browsers and proxy rotation. Requires to create an account on [scrapingbee.com](https://scrapingbee.com) to get an API key.
+[![build](https://github.com/scrapingbee/scrapy-scrapingbee/workflows/build/badge.svg)](https://github.com/scrapingbee/scrapy-scrapingbee/actions)
+[![version](https://img.shields.io/pypi/v/scrapy-scrapingbee.svg)](https://pypi.org/project/scrapy-scrapingbee/)
+[![python](https://img.shields.io/pypi/pyversions/scrapy-scrapingbee.svg)](https://pypi.org/project/scrapy-scrapingbee/)
 
-## Installation
+Integrate Scrapy with ScrapingBee API to use headless browsers for JavaScript and proxy rotation. Requires to create an account on [scrapingbee.com](https://scrapingbee.com) to get an API key.
 
-TODO: deploy to PyPi
+### Installation
 
-## Configuration
+`pip install scrapy-scrapingbee`
 
-Add your `SCRAPINGBEE_API_KEY` and the `ScrapingBeeMiddleware` to `DOWNLOADER_MIDDLEWARES` in your project `settings.py`. Don't forget to set `CONCURRENT_REQUESTS` according to your [ScrapingBee plan](https://www.scrapingbee.com/#pricing).
+### Configuration
+
+Add your `SCRAPINGBEE_API_KEY` and the `ScrapingBeeMiddleware` to your project settings.py. Don't forget to set `CONCURRENT_REQUESTS` according to your [ScrapingBee plan](https://www.scrapingbee.com/#pricing).
 
 ```python
 SCRAPINGBEE_API_KEY = 'REPLACE-WITH-YOUR-API-KEY'
@@ -20,11 +24,11 @@ DOWNLOADER_MIDDLEWARES = {
 CONCURRENT_REQUESTS = 1
 ```
 
-## Usage
+### Usage
 
-You can inherit your spiders from `ScrapingBeeSpider` and yield a `ScrapingBeeRequest`.
+Inherit your spiders from `ScrapingBeeSpider` and yield a `ScrapingBeeRequest`.
 
-`ScrapingBeeSpider` overrides the default logger to hide your API_KEY in the Scrapy logs.
+ScrapingBeeSpider overrides the default logger to hide your API key in the Scrapy logs.
 
 Below you can see an example from the spider in [httpbin.py](examples/httpbin/httpbin/spiders/httpbin.py).
 
@@ -38,7 +42,6 @@ class HttpbinSpider(ScrapingBeeSpider):
     name = 'httpbin'
     start_urls = [
         'https://httpbin.org',
-        'https://httpbin.org/anything',
     ]
 
     def start_requests(self):
@@ -65,17 +68,13 @@ class HttpbinSpider(ScrapingBeeSpider):
         ...
 ```
 
-You can pass [documented ScrapingBee parameters](https://www.scrapingbee.com/documentation/) in the `params` argument of a `ScrapingBeeRequest`. Cookies and headers have reserved arguments like a normal Scrapy Request.
+You can pass [ScrapingBee parameters](https://www.scrapingbee.com/documentation/) in the params argument of a ScrapingBeeRequest. Headers and cookies are passed like a normal Scrapy Request. ScrapingBeeRequest formats all parameters, headers and cookies to the format expected by the ScrapingBee API.
 
-`ScrapingBeeRequest` takes care of formatting all parameters, headers and cookies so that you can pass normal types.
-
-TODO: handle POST requests
-
-## Examples
+### Examples
 
 Add your API key to [settings.py](examples/httpbin/httpbin/settings.py).
 
-In your terminal, go to `examples/httpbin/httpbin` and run the example spider with:
+To run the examples you need to clone this repository. In your terminal, go to `examples/httpbin/httpbin` and run the example spider with:
 
 ```bash
 scrapy crawl httpbin

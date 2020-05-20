@@ -10,7 +10,7 @@ class HttpbinSpider(ScrapingBeeSpider):
     name = 'httpbin'
     start_urls = [
         'https://httpbin.org',
-        'https://httpbin.org/anything',
+        'https://httpbin.org/headers?json',
     ]
 
     def start_requests(self):
