@@ -1,6 +1,7 @@
 import base64
 import copy
 import logging
+import urllib.parse
 
 from scrapy import Request
 from scrapy.spidermiddlewares.httperror import HttpError
@@ -37,6 +38,10 @@ class ScrapingBeeRequest(Request):
         )
 
     @staticmethod
+    def process_url(s):
+        return urllib.parse.quote(s)
+
+    @staticmethod
     def process_js_snippet(s):
         return base64.b64encode(s.encode()).decode()
 
@@ -60,6 +65,8 @@ class ScrapingBeeRequest(Request):
         for k, v in params.items():
             if v in (None, '', [], {}):
                 continue
+            elif k == 'url':
+                new_params[k] = cls.process_url(v)
             elif k == 'js_snippet':
                 new_params[k] = cls.process_js_snippet(v)
             elif k == 'cookies':

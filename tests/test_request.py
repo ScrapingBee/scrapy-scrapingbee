@@ -4,10 +4,12 @@ DEFAULT_URL = 'https://example.com'
 
 
 def test_scrapingbee_request():
-    '''It should add the url to the request meta'''
-    req = ScrapingBeeRequest(DEFAULT_URL)
-    assert req.url == DEFAULT_URL
-    assert req.meta['scrapingbee']['params']['url'] == DEFAULT_URL
+    '''It should add the encoded url to the request meta'''
+    req = ScrapingBeeRequest(
+        'https://example.com?p=1'
+    )
+    assert req.meta['scrapingbee']['params']['url'] == \
+        'https%3A//example.com%3Fp%3D1'
 
 
 def test_scrapingbee_params():
