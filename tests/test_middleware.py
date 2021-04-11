@@ -11,7 +11,8 @@ DEFAULT_URL = 'https://example.com'
 
 
 def get_spb_url(api_url, api_key, url):
-    return f'{api_url}?api_key={api_key}&url={url}'
+    encoded_url = ScrapingBeeRequest.process_url(url)
+    return f'{api_url}?api_key={api_key}&url={encoded_url}'
 
 
 @pytest.fixture
