@@ -52,7 +52,8 @@ class ScrapingBeeRequest(Request):
     @staticmethod
     def process_cookies(d):
         if isinstance(d, dict):
-            return ';'.join(f'{k}={v}' for k, v in d.items())
+            stringified_cookies = ';'.join(f'{k}={v}' for k, v in d.items())
+            return urllib.parse.quote(stringified_cookies)
         elif isinstance(d, list):
             # ScrapingBee only supports name=value cookies ATM
             raise NotImplementedError

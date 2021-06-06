@@ -1,3 +1,5 @@
+import urllib.parse
+
 from scrapy_scrapingbee import ScrapingBeeRequest
 
 DEFAULT_URL = 'https://example.com'
@@ -44,5 +46,5 @@ def test_scrapinbee_cookies():
         'name_1': 'value_1',
         'name_2': 'value_2',
     })
-    assert req.meta['scrapingbee']['params']['cookies'] == \
-        'name_1=value_1;name_2=value_2'
+    assert urllib.parse.unquote(req.meta['scrapingbee']['params']['cookies']) \
+           == 'name_1=value_1;name_2=value_2'
