@@ -27,13 +27,14 @@ class ScrapingBeeRequest(Request):
         meta['scrapingbee'] = {
             'params': scrapingbee_params
         }
+        errback = kwargs.get("errback", self.handle_error)
 
         super().__init__(
             url,
             headers=headers,
             body=body,
             meta=meta,
-            errback=self.handle_error,
+            errback=errback,
             **kwargs
         )
 
