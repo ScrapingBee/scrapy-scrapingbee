@@ -27,7 +27,7 @@ class ScrapingBeeRequest(Request):
         meta['scrapingbee'] = {
             'params': scrapingbee_params
         }
-        errback = kwargs.get("errback", self.handle_error)
+        errback = kwargs.pop("errback", self.handle_error)
 
         super().__init__(
             url,
