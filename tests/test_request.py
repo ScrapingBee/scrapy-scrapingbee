@@ -48,3 +48,12 @@ def test_scrapinbee_cookies():
     })
     assert urllib.parse.unquote(req.meta['scrapingbee']['params']['cookies']) \
            == 'name_1=value_1;name_2=value_2'
+
+
+def test_scrapingbee_custom_errback():
+    '''It should add the encoded url to the request meta'''
+    req = ScrapingBeeRequest(
+        'https://example.com?p=1',
+        errback=lambda err: print(err)
+    )
+    assert req.errback
