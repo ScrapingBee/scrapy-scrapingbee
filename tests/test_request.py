@@ -52,9 +52,8 @@ def test_scrapinbee_cookies():
 
 def test_scrapingbee_custom_errback():
     '''It should add the encoded url to the request meta'''
-    errback = lambda err: print(err)
     req = ScrapingBeeRequest(
         'https://example.com?p=1',
-        errback=errback
+        errback=lambda err: print(err)
     )
     assert req.errback
