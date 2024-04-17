@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='scrapy-scrapingbee',
-    version='0.0.5',
+    version='0.0.6',
     url='https://github.com/scrapingbee/scrapy-scrapingbee',
     description='JavaScript support and proxy rotation for Scrapy with ScrapingBee',
     long_description=open('README.md').read(),
