@@ -1,5 +1,6 @@
 import base64
 import copy
+import json
 import logging
 import urllib.parse
 
@@ -61,6 +62,13 @@ class ScrapingBeeRequest(Request):
         elif isinstance(d, str):
             return d
 
+    @staticmethod
+    def process_js_scenario(d):
+        if isinstance(d, dict):
+            return urllib.parse.quote(json.dumps(d))
+        else:
+            raise ValueError('js_scenario must be a dict or a stringified JSON')
+
     @classmethod
     def process_scrapingbee_params(cls, params):
         new_params = {}
@@ -73,6 +81,8 @@ class ScrapingBeeRequest(Request):
                 new_params[k] = cls.process_js_snippet(v)
             elif k == 'cookies':
                 new_params[k] = cls.process_cookies(v)
+            elif k == 'js_scenario':
+                new_params[k] = cls.process_js_scenario(v)
             else:
                 new_params[k] = v
         return new_params

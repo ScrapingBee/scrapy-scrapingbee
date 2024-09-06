@@ -56,6 +56,14 @@ class HttpbinSpider(ScrapingBeeSpider):
                 # 'return_page_source': True,
                 # 'wait': 3000,
                 # 'wait_for': '#swagger-ui',
+                # 'json_scenario': {
+                #     "instructions": [
+                #         {"wait_for": "#slow_button"},
+                #         {"click": "#slow_button"},
+                #         {"scroll_x": 1000},
+                #         {"wait": 1000},
+                #     ]
+                # },
             },
             headers={
                 # 'Accept-Language': 'En-US',

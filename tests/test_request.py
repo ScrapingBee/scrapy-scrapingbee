@@ -50,6 +50,17 @@ def test_scrapinbee_cookies():
            == 'name_1=value_1;name_2=value_2'
 
 
+def test_scrapinbee_js_scenario():
+    '''It should stringify and b64 encode the JSON'''
+    req = ScrapingBeeRequest(DEFAULT_URL, js_scenario={
+        'instructions': [
+            {'click': '#buttonId'},
+        ],
+    })
+    assert req.meta['scrapingbee']['params']['js_scenario'] == \
+        '%7B%22instructions%22%3A%20%5B%7B%22click%22%3A%20%22%23buttonId%22%7D%5D%7D'
+
+
 def test_scrapingbee_custom_errback():
     '''It should add the encoded url to the request meta'''
     req = ScrapingBeeRequest(
