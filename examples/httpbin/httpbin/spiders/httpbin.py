@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
-from scrapy_scrapingbee import ScrapingBeeSpider, ScrapingBeeRequest
+import scrapy
+from scrapy_scrapingbee import ScrapingBeeRequest
 
 from httpbin.items import HttpbinItem
 
 JS_SNIPPET = 'window.scrollTo(0, document.body.scrollHeight);'
 
 
-class HttpbinSpider(ScrapingBeeSpider):
+class HttpbinSpider(scrapy.Spider):
     name = 'httpbin'
     start_urls = [
         'https://httpbin.org',
         'https://httpbin.org/headers?json',
     ]
 
-    def start_requests(self):
+    async def start(self):
         for url in self.start_urls:
             yield ScrapingBeeRequest(url, params={
                 # 'render_js': False,
@@ -37,5 +38,6 @@ class HttpbinSpider(ScrapingBeeSpider):
             url=response.url,
             status=response.status,
             body=body,
-            headers=response.headers,
+            headers={k.decode(): b','.join(v).decode()
+                     for k, v in response.headers.items()},
         )

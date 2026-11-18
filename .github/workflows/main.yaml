@@ -1,23 +1,58 @@
 name: build
 
-on: [push]
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  lint:
+    name: lint and package
+    runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v7
       with:
-        python-version: 3.9
+        python-version: '3.14'
+    - run: pip install -r requirements.txt
+    - run: flake8 scrapy_scrapingbee tests examples
+    - run: |
+        python -m build
+        twine check dist/*
+
+  test:
+    # Pinned: setup-python has no Python 3.9 build for Ubuntu 26.04.
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # Every Python in setup.py's classifiers and every Scrapy minor
+        # runs at least once (Scrapy 2.14+ needs 3.10+, 2.20+ needs 3.11+).
+        include:
+          - {python: '3.9', scrapy: 'scrapy~=2.13.0'}
+          - {python: '3.10', scrapy: 'scrapy~=2.14.0'}
+          - {python: '3.11', scrapy: 'scrapy~=2.15.0'}
+          - {python: '3.12', scrapy: 'scrapy~=2.16.0'}
+          - {python: '3.13', scrapy: 'scrapy~=2.17.0'}
+          - {python: '3.13', scrapy: 'scrapy~=2.18.0'}
+          - {python: '3.14', scrapy: 'scrapy~=2.19.0'}
+          - {python: '3.14', scrapy: 'scrapy~=2.20.0'}
+          # Unpinned: catches breaking changes in new Scrapy releases.
+          - {python: '3.15', scrapy: 'scrapy'}
+    name: py${{ matrix.python }} / ${{ matrix.scrapy }}
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v7
+      with:
+        python-version: ${{ matrix.python }}
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
-    - name: Lint with flake8
+        pip install "pytest>=8" . "${{ matrix.scrapy }}"
+    - name: Run unit and contract tests
       run: |
-        flake8 scrapy_scrapingbee tests examples
-    - name: Run unit tests
-      run: |
-        pip install .
-        pytest tests
+        pytest -W error::scrapy.exceptions.ScrapyDeprecationWarning tests

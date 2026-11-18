@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='scrapy-scrapingbee',
-    version='0.0.7',
+    version='0.1.0',
     url='https://github.com/scrapingbee/scrapy-scrapingbee',
     description='JavaScript support and proxy rotation for Scrapy with ScrapingBee',
     long_description=open('README.md').read(),
@@ -13,15 +13,19 @@ setup(
     license='MIT',
     packages=['scrapy_scrapingbee'],
     classifiers=[
-        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
+        'Programming Language :: Python :: 3.15',
         'Framework :: Scrapy',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    python_requires='>=3.8',
-    install_requires=['scrapy'],
+    python_requires='>=3.9',
+    install_requires=['scrapy>=2.13'],
 )
